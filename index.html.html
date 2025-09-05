@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taşıt Ücret Hesaplayıcı | GitHub Pages</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #1da1f2 0%, #0099e6 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+        header {
+            background: #2c3e50;
+            color: white;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+        }
+        h1 {
+            margin-bottom: 10px;
+            font-size: 2.2rem;
+        }
+        .description {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: #ecf0f1;
+        }
+        .twitter-share {
+            margin-top: 15px;
+        }
+        .twitter-share-button {
+            display: inline-block;
+            background: #1da1f2;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .twitter-share-button:hover {
+            background: #0d95e8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 25px;
+        }
+        .input-section {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-right: 20px;
+            margin-bottom: 20px;
+        }
+        .result-section {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+            background: #e8f4fc;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        input:focus, select:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 10px;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .button-secondary {
+            background: #e74c3c;
+        }
+        .button-secondary:hover {
+            background: #c0392b;
+        }
+        .result-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+        }
+        .price-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 25px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .price-table th, .price-table td {
+            border: 1px solid #ddd;
+            padding: 12px 15px;
+            text-align: left;
+        }
+        .price-table th {
+            background-color: #2c3e50;
+            color: white;
+        }
+        .price-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .price-table tr:hover {
+            background-color: #e6f7ff;
+        }
+        .calculation-steps {
+            margin-top: 25px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+        }
+        .step {
+            margin-bottom: 12px;
+            padding: 12px;
+            border-left: 4px solid #3498db;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+        footer {
+            text-align: center;
+            padding: 25px;
+            background: #2c3e50;
+            color: white;
+        }
+        .social-links {
+            margin-top: 15px;
+        }
+        .social-links a {
+            color: white;
+            margin: 0 10px;
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+        .social-links a:hover {
+            color: #3498db;
+        }
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+            }
+            .input-section {
+                margin-right: 0;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+        .highlight {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .instructions {
+            background: #fff8e1;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #ffc107;
+        }
+        .success-banner {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            text-align: center;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-car"></i> Taşıt Ücret Hesaplayıcı</h1>
+            <p class="description">GitHub Pages ile yayında!</p>
+            <div class="twitter-share">
+                <a href="#" id="twitterShare" target="_blank" class="twitter-share-button">
+                   <i class="fab fa-twitter"></i> Twitter'da Paylaş
+                </a>
+            </div>
+        </header>
+
+        <div class="success-banner" id="successBanner">
+            <i class="fas fa-check-circle"></i> GitHub Pages başarıyla ayarlandı! Artık bu siteye her yerden ulaşabilirsiniz.
+        </div>
+
+        <div class="instructions">
+            <h3><i class="fas fa-info-circle"></i> Nasıl Kullanılır?</h3>
+            <p>1. Taşıt türünü seçin</p>
+            <p>2. Dakika cinsinden süreyi girin</p>
+            <p>3. "Ücreti Hesapla" butonuna tıklayın</p>
+        </div>
+
+        <div class="content">
+            <div class="input-section">
+                <h2><i class="fas fa-info-circle"></i> Giriş Bilgileri</h2>
+                <div class="form-group">
+                    <label for="vehicleType"><i class="fas fa-car-side"></i> Taşıt Türü:</label>
+                    <select id="vehicleType">
+                        <option value="OzelArac">Özel Araç</option>
+                        <option value="TicariArac">Ticari Araç</option>
+                        <option value="Motorsiklet">Motorsiklet</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="duration"><i class="fas fa-clock"></i> Kalma Süresi (dakika):</label>
+                    <input type="number" id="duration" min="0" value="45">
+                </div>
+                <button onclick="calculatePrice()"><i class="fas fa-calculator"></i> Ücreti Hesapla</button>
+                <button onclick="resetForm()" class="button-secondary"><i class="fas fa-redo"></i> Formu Temizle</button>
+            </div>
+
+            <div class="result-section">
+                <h2><i class="fas fa-chart-pie"></i> Hesaplama Sonuçları</h2>
+                <div class="result-box">
+                    <p><strong><i class="fas fa-car-side"></i> Taşıt Türü:</strong> <span id="resultVehicleType">-</span></p>
+                    <p><strong><i class="fas fa-clock"></i> Kalma Süresi:</strong> <span id="resultDuration">-</span></p>
+                    <p><strong><i class="fas fa-money-bill-wave"></i> Toplam Ücret:</strong> <span id="resultPrice" class="highlight">-</span></p>
+                </div>
+
+                <div class="calculation-steps">
+                    <h3><i class="fas fa-list-ol"></i> Hesaplama Detayları</h3>
+                    <div id="calculationSteps">
+                        Hesaplama yapıldıktan sonra detaylar burada görünecektir.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="padding: 25px;">
+            <h2><i class="fas fa-table"></i> Tarife Tablosu</h2>
+            <table class="price-table">
+                <thead>
+                    <tr>
+                        <th>Taşıt Türü</th>
+                        <th>0 - 45 Dakika</th>
+                        <th>45-60 Dakika</th>
+                        <th>12 Saate Kadar (Saat Başı)</th>
+                        <th>12-24 Saat Arası (Saat Başı)</th>
+                        <th>24 Saat Üstü (Saat Başı)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Özel Araç</td>
+                        <td>ÜCRETSİZ</td>
+                        <td>40,00 TL</td>
+                        <td>5,00 TL</td>
+                        <td>5,00 TL</td>
+                        <td>4,00 TL</td>
+                    </tr>
+                    <tr>
+                        <td>Ticari Araç</td>
+                        <td>10,00 TL</td>
+                        <td>50,00 TL</td>
+                        <td>10,00 TL</td>
+                        <td>8,00 TL</td>
+                        <td>6,00 TL</td>
+                    </tr>
+                    <tr>
+                        <td>Motorsiklet</td>
+                        <td>ÜCRETSİZ</td>
+                        <td>20,00 TL</td>
+                        <td>3,00 TL</td>
+                        <td>3,00 TL</td>
+                        <td>2,00 TL</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <footer>
+            <p>© 2023 Taşıt Ücret Hesaplayıcı | GitHub Pages ile yayınlandı</p>
+            <div class="social-links">
+                <a href="https://github.com" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function calculatePrice() {
+            const vehicleType = document.getElementById('vehicleType').value;
+            const duration = parseInt(document.getElementById('duration').value);
+            
+            if (isNaN(duration) || duration < 0) {
+                alert('Lütfen geçerli bir süre giriniz!');
+                return;
+            }
+            
+            let price = 0;
+            let steps = [];
+            
+            // Taşıt türüne göre tarife belirleme
+            let tariff;
+            switch(vehicleType) {
+                case 'OzelArac':
+                    tariff = { first45: 0, next15: 40, perHour12: 5, perHour24: 5, perHourOver24: 4 };
+                    break;
+                case 'TicariArac':
+                    tariff = { first45: 10, next15: 50, perHour12: 10, perHour24: 8, perHourOver24: 6 };
+                    break;
+                case 'Motorsiklet':
+                    tariff = { first45: 0, next15: 20, perHour12: 3, perHour24: 3, perHourOver24: 2 };
+                    break;
+            }
+            
+            // Hesaplama
+            if (duration <= 45) {
+                price = tariff.first45;
+                steps.push(`İlk 45 dakika: ${tariff.first45} TL`);
+            } else if (duration <= 60) {
+                price = tariff.next15;
+                steps.push(`45-60 dakika arası: ${tariff.next15} TL`);
+            } else {
+                // İlk saat ücreti
+                price = tariff.next15;
+                steps.push(`İlk saat (60 dakika): ${tariff.next15} TL`);
+                
+                // Kalan süre
+                let remainingMinutes = duration - 60;
+                let remainingHours = Math.ceil(remainingMinutes / 60);
+                
+                // Toplam süre (saat cinsinden)
+                let totalHours = duration / 60;
+                
+                if (totalHours <= 12) {
+                    // 12 saate kadar
+                    price += remainingHours * tariff.perHour12;
+                    steps.push(`${remainingHours} saat x ${tariff.perHour12} TL = ${remainingHours * tariff.perHour12} TL`);
+                } else if (totalHours <= 24) {
+                    // 12-24 saat arası
+                    let hours12 = 11; // İlk saat zaten eklendi, kalan 11 saat
+                    price += hours12 * tariff.perHour12;
+                    steps.push(`12 saate kadar olan kısım: 11 saat x ${tariff.perHour12} TL = ${hours12 * tariff.perHour12} TL`);
+                    
+                    let remainingAfter12 = remainingHours - hours12;
+                    price += remainingAfter12 * tariff.perHour24;
+                    steps.push(`12-24 saat arası: ${remainingAfter12} saat x ${tariff.perHour24} TL = ${remainingAfter12 * tariff.perHour24} TL`);
+                } else {
+                    // 24 saat üstü
+                    let hours12 = 11; // İlk saat zaten eklendi, kalan 11 saat
+                    price += hours12 * tariff.perHour12;
+                    steps.push(`12 saate kadar olan kısım: 11 saat x ${tariff.perHour12} TL = ${hours12 * tariff.perHour12} TL`);
+                    
+                    let hours24 = 12; // 12-24 saat arası 12 saat
+                    price += hours24 * tariff.perHour24;
+                    steps.push(`12-24 saat arası: 12 saat x ${tariff.perHour24} TL = ${hours24 * tariff.perHour24} TL`);
+                    
+                    let remainingAfter24 = remainingHours - hours12 - hours24;
+                    price += remainingAfter24 * tariff.perHourOver24;
+                    steps.push(`24 saat sonrası: ${remainingAfter24} saat x ${tariff.perHourOver24} TL = ${remainingAfter24 * tariff.perHourOver24} TL`);
+                }
+            }
+            
+            // Sonuçları göster
+            document.getElementById('resultVehicleType').textContent = document.getElementById('vehicleType').options[document.getElementById('vehicleType').selectedIndex].text;
+            document.getElementById('resultDuration').textContent = `${duration} dakika (${(duration/60).toFixed(2)} saat)`;
+            document.getElementById('resultPrice').textContent = `${price.toFixed(2)} TL`;
+            
+            // Hesaplama adımlarını göster
+            let stepsHtml = '';
+            steps.forEach(step => {
+                stepsHtml += `<div class="step">${step}</div>`;
+            });
+            stepsHtml += `<div class="step"><strong>Toplam: ${price.toFixed(2)} TL</strong></div>`;
+            document.getElementById('calculationSteps').innerHTML = stepsHtml;
+        }
+        
+        function resetForm() {
+            document.getElementById('vehicleType').value = 'OzelArac';
+            document.getElementById('duration').value = '45';
+            document.getElementById('resultVehicleType').textContent = '-';
+            document.getElementById('resultDuration').textContent = '-';
+            document.getElementById('resultPrice').textContent = '-';
+            document.getElementById('calculationSteps').innerHTML = 'Hesaplama yapıldıktan sonra detaylar burada görünecektir.';
+        }
+        
+        // Twitter paylaşım linkini ayarla
+        document.getElementById('twitterShare').href = 
+            `https://twitter.com/intent/tweet?text=Harika%20bir%20Taşıt%20Ücret%20Hesaplayıcı%20buldum!%20Ücretsiz%20ve%20kullanışlı.%20Hemen%20dene:&url=${encodeURIComponent(window.location.href)}`;
+        
+        // Sayfa yüklendiğinde varsayılan değerlerle hesaplama yap
+        window.onload = function() {
+            calculatePrice();
+            // GitHub Pages'te çalıştığını göster
+            if (window.location.hostname.includes('github.io')) {
+                document.getElementById('successBanner').style.display = 'block';
+            }
+        };
+    </script>
+</body>
+</html>
